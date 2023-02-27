@@ -40,12 +40,26 @@
   <!-- Our app-index web component. This component is defined in src/pages/app-index.ts-->
   <app-index></app-index>
 
+  <button onclick="subscribe()">Subscribe to Push Notifications</button>
+
   <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(
-        '/sw.js'
-      );
+    addEventListener('load', async() => {
+      if ('serviceWorker' in navigator) {
+        let sw = await navigator.serviceWorker.register('/sw.js');
+      }
+    });
+
+    async function subscribe() {
+      let sw = await navigator.serviceWorker.ready;
+      let push = await sw.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: 'BGlFCGsO5eAj_kMeDjKzwpQ_ElWna-HQcb063UpT-xx8UJ1ILsOGLbwsioIRsd1JNTHmKpE5RXNKeFTQtzj0ipg'
+            });
+            console.log('Subscription object: ', JSON.stringify(push));
+
+            alert(JSON.stringify(push));
     }
+
   </script>
 </body>
 
